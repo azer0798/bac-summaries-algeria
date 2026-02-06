@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <title>لوحة تحكم الملخصات</title>
+  <style>
+    body { font-family: Arial; padding: 20px; max-width: 800px; margin: auto; }
+    form { background: #f5f5f5; padding: 20px; border-radius: 10px; }
+    input, textarea, button { width: 100%; margin: 10px 0; padding: 10px; }
+    .summary-list { margin-top: 20px; }
+    .summary-item { border: 1px solid #ddd; padding: 15px; margin: 10px 0; }
+  </style>
+</head>
+<body>
+  <h1>🔧 لوحة تحكم الملخصات</h1>
+  
+  <div id="login" style="display: block;">
+    <input type="password" id="password" placeholder="كلمة المرور">
+    <button onclick="login()">دخول</button>
+  </div>
+
+  <div id="admin-panel" style="display: none;">
+    <form onsubmit="addSummary(event)">
+      <input type="text" id="title" placeholder="عنوان الملخص">
+      <select id="subject">
+        <option value="فلسفة">الفلسفة</option>
+        <option value="آداب">الآداب</option>
+        <option value="تاريخ">التاريخ</option>
+      </select>
+      <textarea id="content" placeholder="محتوى الملخص" rows="10"></textarea>
+      <button type="submit">إضافة ملخص</button>
+    </form>
+
+    <div id="summary-list" class="summary-list"></div>
+  </div>
+
+  <script>
+    let summaries = [];
+    
+    async function login() {
+      const pass = document.getElementById('password').value;
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({password: pass})
+      });
+      const data = await res.json();
+      if (data.success) {
+        document.getElementById('login').style.display = 'none';
+        document.getElementById('admin-panel').style.display = 'block';
+        loadSummaries();
+      } else {
+        alert('كلمة مرور خاطئة');
+      }
+    }
+
+    async function loadSummaries() {
+      const res = await fetch('/api/summaries');
+      summaries = await res.json();
+      displaySummaries();
+    }
+
+    function displaySummaries() {
+      const container = document.getElementById('summary-list');
+      container.innerHTML = summaries.map(s => `
+        <div class="summary-item">
+          <h4>${s.title}</h4>
+          <p>${s.content}</p>
+          <button onclick="editSummary(${s.id})">تعديل</button>
+          <button onclick="deleteSummary(${s.id})">حذف</button>
+        </div>
+      `).join('');
+    }
+
+    async function addSummary(e) {
+      e.preventDefault();
+      const summary = {
+        title: document.getElementById('title').value,
+        content: document.getElementById('content').value,
+        subject: document.getElementById('subject').value
+      };
+      
+      await fetch('/api/summaries', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(summary)
+      });
+      
+      loadSummaries();
+      e.target.reset();
+    }
+  </script>
+</body>
+</html>
