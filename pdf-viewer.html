@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عرض PDF - ملخصات آداب وفلسفة</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .pdf-container {
+            width: 100%;
+            height: calc(100vh - 80px);
+            margin-top: 80px;
+            background: #f5f5f5;
+        }
+        
+        .pdf-toolbar {
+            background: #2c3e50;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .pdf-toolbar-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .pdf-toolbar-right {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .pdf-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            max-width: 400px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .pdf-actions button {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .pdf-actions button:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+        
+        .pdf-viewer {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: white;
+        }
+        
+        .page-navigation {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(44, 62, 80, 0.9);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .page-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .page-btn:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .page-info {
+            font-size: 0.9rem;
+        }
+        
+        .zoom-controls {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            background: rgba(44, 62, 80, 0.9);
+            border-radius: 25px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .zoom-btn {
+            background: none;
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .zoom-btn:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .loading-pdf {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #2c3e50;
+        }
+        
+        .loading-pdf i {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #4CAF50;
+        }
+        
+        @media (max-width: 768px) {
+            .pdf-title {
+                max-width: 200px;
+            }
+            
+            .pdf-toolbar {
+                padding: 10px 15px;
+            }
+            
+            .page-navigation {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- شريط أدوات PDF -->
+    <div class="pdf-toolbar">
+        <div class="pdf-toolbar-left">
+            <button onclick="goBack()" class="back-btn">
+                <i class="fas fa-arrow-right"></i> رجوع
+            </button>
+            <div class="pdf-title" id="pdf-title">جاري تحميل الملف...</div>
+        </div>
+        <div class="pdf-toolbar-right">
+            <div class="pdf-actions">
+                <button onclick="downloadPDF()">
+                    <i class="fas fa-download"></i> تحميل
+                </button>
+                <button onclick="printPDF()">
+                    <i class="fas fa-print"></i> طباعة
+                </button>
+                <button onclick="toggleFullscreen()">
+                    <i class="fas fa-expand"></i> ملء الشاشة
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- عرض PDF -->
+    <div class="pdf-container">
+        <div class="loading-pdf" id="loading">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>جاري تحميل الملف...</p>
+        </div>
+        <iframe class="pdf-viewer" id="pdf-viewer" style="display: none;"></iframe>
+    </div>
+    
+    <!-- تحكم بالصفحات -->
+    <div class="page-navigation" style="display: none;" id="page-nav">
+        <button class="page-btn" onclick="prevPage()">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+        <div class="page-info">
+            الصفحة: <span id="current-page">1</span> / <span id="total-pages">?</span>
+        </div>
+        <button class="page-btn" onclick="nextPage()">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+    </div>
+    
+    <!-- تحكم بالتكبير -->
+    <div class="zoom-controls" style="display: none;" id="zoom-controls">
+        <button class="zoom-btn" onclick="zoomIn()">
+            <i class="fas fa-search-plus"></i>
+        </button>
+        <button class="zoom-btn" onclick="zoomOut()">
+            <i class="fas fa-search-minus"></i>
+        </button>
+        <button class="zoom-btn" onclick="resetZoom()">
+            <i class="fas fa-sync-alt"></i>
+        </button>
+    </div>
+
+    <script>
+        // الحصول على معاملات الرابط
+        const urlParams = new URLSearchParams(window.location.search);
+        const fileId = urlParams.get('id');
+        const fileName = urlParams.get('name');
+        const fileUrl = urlParams.get('url');
+        
+        let currentPDF = null;
+        let currentPage = 1;
+        let totalPages = 0;
+        let zoomLevel = 1;
+        
+        // تهيئة عرض PDF
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (fileName) {
+                document.getElementById('pdf-title').textContent = fileName;
+            }
+            
+            // محاولة تحميل PDF
+            await loadPDF();
+        });
+        
+        async function loadPDF() {
+            const loading = document.getElementById('loading');
+            const viewer = document.getElementById('pdf-viewer');
+            
+            try {
+                if (fileUrl && fileUrl !== '#') {
+                    // إذا كان هناك رابط حقيقي
+                    viewer.src = fileUrl;
+                } else if (fileId) {
+                    // جلب من قاعدة البيانات
+                    const pdfFile = await database.getPDFFileById(fileId);
+                    if (pdfFile && pdfFile.file_data) {
+                        // تحويل البيانات الثنائية إلى URL
+                        const blob = new Blob([pdfFile.file_data], { type: 'application/pdf' });
+                        const url = URL.createObjectURL(blob);
+                        viewer.src = url;
+                        
+                        if (!fileName) {
+                            document.getElementById('pdf-title').textContent = pdfFile.file_name;
+                        }
+                    } else {
+                        throw new Error('الملف غير موجود');
+                    }
+                } else {
+                    throw new Error('لم يتم تحديد ملف');
+                }
+                
+                // عندما يتم تحميل PDF
+                viewer.onload = () => {
+                    loading.style.display = 'none';
+                    viewer.style.display = 'block';
+                    
+                    // إظهار أدوات التحكم بعد ثانية
+                    setTimeout(() => {
+                        document.getElementById('page-nav').style.display = 'flex';
+                        document.getElementById('zoom-controls').style.display = 'flex';
+                    }, 1000);
+                    
+                    // تهيئة مكتبة PDF.js (اختياري)
+                    initPDFJS();
+                };
+                
+                viewer.onerror = () => {
+                    showError('تعذر تحميل ملف PDF');
+                };
+                
+            } catch (error) {
+                console.error('خطأ في تحميل PDF:', error);
+                showError('تعذر تحميل الملف: ' + error.message);
+            }
+        }
+        
+        // دعم مكتبة PDF.js لمعاينة متقدمة
+        function initPDFJS() {
+            // يمكن إضافة PDF.js هنا لمعاينة متقدمة
+            console.log('تهيئة معاينة PDF متقدمة...');
+            
+            // مثال بسيط لتعقب الصفحات (إذا كان الـ iframe يسمح)
+            try {
+                const iframe = document.getElementById('pdf-viewer');
+                iframe.contentWindow.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowRight') prevPage();
+                    if (e.key === 'ArrowLeft') nextPage();
+                });
+            } catch (e) {
+                console.log('تعقب الصفحات غير متاح');
+            }
+        }
+        
+        // التحكم بالصفحات
+        function prevPage() {
+            const iframe = document.getElementById('pdf-viewer');
+            try {
+                iframe.contentWindow.PDFViewerApplication && 
+                iframe.contentWindow.PDFViewerApplication.page--;
+            } catch (e) {
+                // الطريقة البديلة
+                currentPage = Math.max(1, currentPage - 1);
+                updatePageInfo();
+                scrollToPage();
+            }
+        }
+        
+        function nextPage() {
+            const iframe = document.getElementById('pdf-viewer');
+            try {
+                iframe.contentWindow.PDFViewerApplication && 
+                iframe.contentWindow.PDFViewerApplication.page++;
+            } catch (e) {
+                // الطريقة البديلة
+                currentPage = Math.min(totalPages, currentPage + 1);
+                updatePageInfo();
+                scrollToPage();
+            }
+        }
+        
+        function scrollToPage() {
+            const iframe = document.getElementById('pdf-viewer');
+            iframe.contentWindow.scrollTo(0, (currentPage - 1) * 1000);
+        }
+        
+        function updatePageInfo() {
+            document.getElementById('current-page').textContent = currentPage;
+            document.getElementById('total-pages').textContent = totalPages || '?';
+        }
+        
+        // التحكم بالتكبير
+        function zoomIn() {
+            zoomLevel += 0.25;
+            applyZoom();
+        }
+        
+        function zoomOut() {
+            zoomLevel = Math.max(0.5, zoomLevel - 0.25);
+            applyZoom();
+        }
+        
+        function resetZoom() {
+            zoomLevel = 1;
+            applyZoom();
+        }
+        
+        function applyZoom() {
+            const iframe = document.getElementById('pdf-viewer');
+            iframe.style.transform = `scale(${zoomLevel})`;
+            iframe.style.transformOrigin = 'top center';
+        }
+        
+        // وظائف أخرى
+        function downloadPDF() {
+            const link = document.createElement('a');
+            link.href = document.getElementById('pdf-viewer').src;
+            link.download = fileName || 'ملخص.pdf';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+        
+        function printPDF() {
+            const iframe = document.getElementById('pdf-viewer');
+            iframe.contentWindow.print();
+        }
+        
+        function toggleFullscreen() {
+            const container = document.querySelector('.pdf-container');
+            if (!document.fullscreenElement) {
+                container.requestFullscreen().catch(err => {
+                    console.log(`خطأ في ملء الشاشة: ${err.message}`);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+        
+        function goBack() {
+            window.history.back();
+        }
+        
+        function showError(message) {
+            document.getElementById('loading').innerHTML = `
+                <i class="fas fa-exclamation-triangle" style="color: #e74c3c;"></i>
+                <h3>خطأ في التحميل</h3>
+                <p>${message}</p>
+                <button onclick="goBack()" style="margin-top: 20px; padding: 10px 20px; background: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                    <i class="fas fa-arrow-right"></i> العودة
+                </button>
+            `;
+        }
+        
+        // إعدادات اختصارات لوحة المفاتيح
+        document.addEventListener('keydown', (e) => {
+            // مسافة للتمرير
+            if (e.code === 'Space') {
+                e.preventDefault();
+                nextPage();
+            }
+            
+            // زر الهروب للخروج من ملء الشاشة
+            if (e.code === 'Escape' && document.fullscreenElement) {
+                document.exitFullscreen();
+            }
+            
+            // + و - للتحكم بالتكبير
+            if (e.key === '+' || e.key === '=') {
+                e.preventDefault();
+                zoomIn();
+            }
+            if (e.key === '-' || e.key === '_') {
+                e.preventDefault();
+                zoomOut();
+            }
+            
+            // 0 لإعادة التكبير
+            if (e.key === '0') {
+                resetZoom();
+            }
+        });
+        
+        // تحديث حالة ملء الشاشة
+        document.addEventListener('fullscreenchange', () => {
+            const fullscreenBtn = document.querySelector('.pdf-actions button:last-child');
+            if (fullscreenBtn) {
+                if (document.fullscreenElement) {
+                    fullscreenBtn.innerHTML = '<i class="fas fa-compress"></i> خروج من ملء الشاشة';
+                } else {
+                    fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i> ملء الشاشة';
+                }
+            }
+        });
+    </script>
+    
+    <script src="db.js"></script>
+</body>
+</html>
