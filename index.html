@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ملخصات البكالوريا - آداب وفلسفة</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>📚 ملخصات بكالوريا 3AS آداب وفلسفة</h1>
+    <nav>
+      <a href="#philo">الفلسفة</a>
+      <a href="#adab">الآداب</a>
+      <a href="/admin/dashboard.html">لوحة التحكم</a>
+    </nav>
+  </header>
+
+  <main id="summaries"></main>
+
+  <script>
+    fetch('/api/summaries')
+      .then(r => r.json())
+      .then(summaries => {
+        const container = document.getElementById('summaries');
+        summaries.forEach(s => {
+          const div = document.createElement('div');
+          div.className = 'summary-card';
+          div.innerHTML = `
+            <h3>${s.title}</h3>
+            <span class="subject">${s.subject}</span>
+            <p>${s.content.substring(0, 200)}...</p>
+            <small>${s.date}</small>
+          `;
+          container.appendChild(div);
+        });
+      });
+  </script>
+</body>
+</html>
