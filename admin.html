@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>لوحة التحكم - مسؤول الموقع</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* أنماط خاصة بلوحة التحكم */
         .admin-container {
             min-height: 100vh;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -20,6 +20,7 @@
             padding: 30px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             margin-top: 20px;
+            animation: fadeIn 0.5s ease;
         }
         
         .admin-header {
@@ -29,6 +30,8 @@
             margin-bottom: 30px;
             padding-bottom: 20px;
             border-bottom: 2px solid #eee;
+            flex-wrap: wrap;
+            gap: 20px;
         }
         
         .admin-title {
@@ -44,7 +47,7 @@
         
         .admin-nav {
             display: flex;
-            gap: 15px;
+            gap: 10px;
             flex-wrap: wrap;
         }
         
@@ -59,6 +62,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            white-space: nowrap;
         }
         
         .admin-nav a:hover, .admin-nav a.active {
@@ -69,11 +73,11 @@
         
         .admin-section {
             display: none;
+            animation: fadeIn 0.5s ease;
         }
         
         .admin-section.active {
             display: block;
-            animation: fadeIn 0.5s ease;
         }
         
         @keyframes fadeIn {
@@ -95,6 +99,7 @@
             text-align: center;
             box-shadow: 0 8px 25px rgba(0,0,0,0.1);
             transition: all 0.3s ease;
+            cursor: pointer;
         }
         
         .admin-card:hover {
@@ -111,6 +116,7 @@
         .admin-card h3 {
             color: #2c3e50;
             margin-bottom: 10px;
+            font-size: 1.3rem;
         }
         
         .admin-card p {
@@ -118,11 +124,14 @@
             font-size: 0.9rem;
         }
         
-        .admin-card button {
-            margin-top: 15px;
-            width: 100%;
+        .admin-card .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin: 10px 0;
         }
         
+        /* نماذج الإدخال */
         .form-group {
             margin-bottom: 20px;
         }
@@ -132,6 +141,11 @@
             margin-bottom: 8px;
             font-weight: 600;
             color: #2c3e50;
+            font-size: 0.95rem;
+        }
+        
+        .form-group .required {
+            color: #e74c3c;
         }
         
         .form-group input,
@@ -144,6 +158,7 @@
             font-size: 1rem;
             font-family: 'Cairo', sans-serif;
             transition: all 0.3s ease;
+            background: white;
         }
         
         .form-group input:focus,
@@ -154,11 +169,31 @@
             box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
         }
         
+        .form-group small {
+            display: block;
+            margin-top: 5px;
+            color: #7f8c8d;
+            font-size: 0.85rem;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+        
+        /* أزرار */
         .form-actions {
             display: flex;
             gap: 15px;
             justify-content: flex-end;
             margin-top: 30px;
+            flex-wrap: wrap;
         }
         
         .btn {
@@ -172,6 +207,8 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            min-width: 120px;
+            justify-content: center;
         }
         
         .btn-primary {
@@ -189,43 +226,70 @@
             color: white;
         }
         
+        .btn-warning {
+            background: linear-gradient(135deg, #f39c12 0%, #d68910 100%);
+            color: white;
+        }
+        
+        .btn-info {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+        }
+        
         .btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 20px rgba(0,0,0,0.2);
         }
         
+        .btn:active {
+            transform: translateY(-1px);
+        }
+        
+        /* الجداول */
         .table-container {
             overflow-x: auto;
             margin: 30px 0;
             border-radius: 10px;
             box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            background: white;
+            border: 1px solid #eee;
         }
         
         table {
             width: 100%;
             border-collapse: collapse;
-            background: white;
-        }
-        
-        th, td {
-            padding: 15px;
-            text-align: right;
-            border-bottom: 1px solid #eee;
+            min-width: 800px;
         }
         
         th {
             background: #f8f9fa;
             font-weight: 700;
             color: #2c3e50;
+            padding: 15px;
+            text-align: right;
+            border-bottom: 2px solid #eee;
+            font-size: 0.95rem;
+        }
+        
+        td {
+            padding: 15px;
+            text-align: right;
+            border-bottom: 1px solid #eee;
+            vertical-align: middle;
         }
         
         tr:hover {
             background: #f8f9fa;
         }
         
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
         .action-buttons {
             display: flex;
             gap: 8px;
+            flex-wrap: wrap;
         }
         
         .action-btn {
@@ -235,6 +299,10 @@
             cursor: pointer;
             font-size: 0.85rem;
             transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
         }
         
         .action-btn.edit {
@@ -247,11 +315,87 @@
             color: white;
         }
         
+        .action-btn.view {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .action-btn.download {
+            background: #9b59b6;
+            color: white;
+        }
+        
         .action-btn:hover {
-            transform: scale(1.05);
+            transform: translateY(-2px);
             opacity: 0.9;
         }
         
+        /* حالة الرفع */
+        .upload-status {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 10px;
+            background: #f8f9fa;
+            display: none;
+        }
+        
+        .upload-status.show {
+            display: block;
+        }
+        
+        .upload-status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .upload-status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #eee;
+            border-radius: 5px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background: #4CAF50;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        /* علامات الحالة */
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+        
+        .status-active {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-inactive {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        /* نافذة تسجيل الدخول */
         .login-container {
             max-width: 400px;
             margin: 100px auto;
@@ -260,11 +404,16 @@
             border-radius: 20px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             text-align: center;
+            animation: fadeIn 0.5s ease;
         }
         
         .login-container h2 {
             margin-bottom: 30px;
             color: #2c3e50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
         
         .login-container input {
@@ -274,21 +423,142 @@
             border: 2px solid #ddd;
             border-radius: 10px;
             font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .login-container input:focus {
+            border-color: #4CAF50;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
         }
         
         .login-container button {
             width: 100%;
+            margin-top: 10px;
         }
         
-        @media (max-width: 768px) {
+        .login-error {
+            color: #e74c3c;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            display: none;
+        }
+        
+        .login-error.show {
+            display: block;
+        }
+        
+        /* قسم النسخ الاحتياطي */
+        .backup-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 30px 0;
+        }
+        
+        .backup-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .backup-option {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .backup-option:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .backup-option i {
+            font-size: 2.5rem;
+            color: #3498db;
+            margin-bottom: 15px;
+        }
+        
+        /* قسم رفع الملفات */
+        .file-upload-area {
+            border: 3px dashed #ddd;
+            border-radius: 15px;
+            padding: 40px 20px;
+            text-align: center;
+            margin: 20px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .file-upload-area:hover {
+            border-color: #4CAF50;
+            background: #f8f9fa;
+        }
+        
+        .file-upload-area.dragover {
+            border-color: #4CAF50;
+            background: #e8f5e9;
+        }
+        
+        .file-upload-area i {
+            font-size: 3rem;
+            color: #7f8c8d;
+            margin-bottom: 15px;
+        }
+        
+        .file-upload-area input {
+            display: none;
+        }
+        
+        .file-preview {
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .file-preview.show {
+            display: block;
+        }
+        
+        .file-preview-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .file-preview-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .file-preview-name {
+            font-weight: 600;
+        }
+        
+        .file-preview-size {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+        
+        /* إعدادات متجاوبة */
+        @media (max-width: 992px) {
             .admin-nav {
-                flex-direction: column;
                 width: 100%;
+                justify-content: center;
             }
             
-            .admin-nav a {
-                text-align: center;
-                justify-content: center;
+            .form-row {
+                flex-direction: column;
+                gap: 0;
             }
             
             .form-actions {
@@ -297,182 +567,525 @@
             
             .btn {
                 width: 100%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .admin-container {
+                padding: 10px;
+            }
+            
+            .admin-panel {
+                padding: 20px;
+            }
+            
+            .admin-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .admin-nav {
+                flex-wrap: wrap;
+            }
+            
+            .admin-nav a {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .admin-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .table-container {
+                margin: 15px -10px;
+                border-radius: 0;
+            }
+            
+            th, td {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .action-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .admin-panel {
+                padding: 15px;
+            }
+            
+            .admin-title h2 {
+                font-size: 1.3rem;
+            }
+            
+            .admin-nav a {
+                flex: 1;
+                min-width: 120px;
                 justify-content: center;
             }
         }
     </style>
 </head>
 <body>
+    <!-- شاشة تسجيل الدخول -->
     <div id="login-screen" class="login-container" style="display: none;">
         <h2><i class="fas fa-user-shield"></i> دخول المسؤول</h2>
-        <input type="password" id="admin-password" placeholder="أدخل كلمة المرور">
+        <p style="color: #7f8c8d; margin-bottom: 30px;">الرجاء إدخال بيانات الدخول للوصول إلى لوحة التحكم</p>
+        
+        <input type="password" id="admin-password" placeholder="كلمة المرور" autocomplete="current-password">
+        
+        <div class="form-group" style="text-align: right;">
+            <label>
+                <input type="checkbox" id="remember-me">
+                تذكرني
+            </label>
+        </div>
+        
         <button class="btn btn-primary" onclick="loginAdmin()">
             <i class="fas fa-sign-in-alt"></i> دخول
         </button>
-        <p style="margin-top: 20px; color: #7f8c8d;">
-            <a href="index.html" style="color: #4CAF50;">
-                <i class="fas fa-home"></i> العودة للرئيسية
+        
+        <div id="login-error" class="login-error"></div>
+        
+        <p style="margin-top: 30px; color: #7f8c8d; font-size: 0.9rem;">
+            <a href="index.html" style="color: #4CAF50; text-decoration: none;">
+                <i class="fas fa-arrow-right"></i> العودة إلى الموقع الرئيسي
             </a>
         </p>
     </div>
     
+    <!-- لوحة التحكم -->
     <div id="admin-screen" class="admin-container" style="display: none;">
         <div class="container">
             <div class="admin-panel">
+                <!-- رأس لوحة التحكم -->
                 <div class="admin-header">
                     <div class="admin-title">
                         <i class="fas fa-user-shield"></i>
                         <div>
                             <h2>لوحة تحكم المسؤول</h2>
-                            <p style="color: #7f8c8d;">إدارة المواد والملفات والمستخدمين</p>
+                            <p style="color: #7f8c8d; font-size: 0.9rem;">إدارة المواد والملفات والمستخدمين والإعدادات</p>
                         </div>
                     </div>
+                    
                     <div class="admin-nav">
-                        <a href="#" onclick="showSection('dashboard')" class="active">
+                        <a href="#" onclick="showSection('dashboard')" class="active" id="nav-dashboard">
                             <i class="fas fa-tachometer-alt"></i> لوحة التحكم
                         </a>
-                        <a href="#" onclick="showSection('subjects')">
-                            <i class="fas fa-book"></i> إدارة المواد
+                        <a href="#" onclick="showSection('subjects')" id="nav-subjects">
+                            <i class="fas fa-book"></i> المواد
                         </a>
-                        <a href="#" onclick="showSection('files')">
-                            <i class="fas fa-file-alt"></i> إدارة الملفات
+                        <a href="#" onclick="showSection('files')" id="nav-files">
+                            <i class="fas fa-file-alt"></i> الملفات
                         </a>
-                        <a href="#" onclick="showSection('users')">
+                        <a href="#" onclick="showSection('users')" id="nav-users">
                             <i class="fas fa-users"></i> المستخدمين
                         </a>
-                        <a href="index.html">
+                        <a href="#" onclick="showSection('settings')" id="nav-settings">
+                            <i class="fas fa-cog"></i> الإعدادات
+                        </a>
+                        <a href="index.html" id="nav-home">
                             <i class="fas fa-home"></i> الرئيسية
                         </a>
                     </div>
                 </div>
                 
-                <!-- لوحة التحكم -->
+                <!-- قسم لوحة التحكم -->
                 <div id="dashboard" class="admin-section active">
                     <h3><i class="fas fa-tachometer-alt"></i> نظرة عامة</h3>
                     
-                    <div class="admin-grid">
-                        <div class="admin-card">
-                            <i class="fas fa-users"></i>
-                            <h3 id="admin-user-count">0</h3>
-                            <p>مستخدم</p>
-                        </div>
-                        <div class="admin-card">
-                            <i class="fas fa-book"></i>
-                            <h3 id="admin-subject-count">0</h3>
-                            <p>مادة</p>
-                        </div>
-                        <div class="admin-card">
-                            <i class="fas fa-file-alt"></i>
-                            <h3 id="admin-file-count">0</h3>
-                            <p>ملف</p>
-                        </div>
-                        <div class="admin-card">
-                            <i class="fas fa-chart-line"></i>
-                            <h3>نشيط</h3>
-                            <p>حالة النظام</p>
+                    <div class="admin-grid" id="dashboard-stats">
+                        <!-- سيتم ملؤها بالجافاسكريبت -->
+                    </div>
+                    
+                    <div class="recent-activity">
+                        <h4><i class="fas fa-history"></i> النشاط الحديث</h4>
+                        <div class="table-container">
+                            <table id="recent-activity-table">
+                                <thead>
+                                    <tr>
+                                        <th>النوع</th>
+                                        <th>الوصف</th>
+                                        <th>التاريخ</th>
+                                        <th>الإجراء</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- سيتم ملؤها بالجافاسكريبت -->
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                     
                     <div class="form-actions">
-                        <button class="btn btn-primary" onclick="refreshAdminStats()">
-                            <i class="fas fa-sync-alt"></i> تحديث الإحصائيات
+                        <button class="btn btn-primary" onclick="refreshDashboard()">
+                            <i class="fas fa-sync-alt"></i> تحديث
+                        </button>
+                        <button class="btn btn-info" onclick="exportDashboardData()">
+                            <i class="fas fa-download"></i> تصدير البيانات
                         </button>
                     </div>
                 </div>
                 
-                <!-- إدارة المواد -->
+                <!-- قسم المواد -->
                 <div id="subjects" class="admin-section">
-                    <h3><i class="fas fa-book"></i> إدارة المواد</h3>
+                    <h3><i class="fas fa-book"></i> إدارة المواد الدراسية</h3>
                     
-                    <div class="form-group">
-                        <label for="subject-name">إضافة مادة جديدة:</label>
-                        <input type="text" id="subject-name" placeholder="اسم المادة">
-                        <input type="text" id="subject-desc" placeholder="وصف المادة" style="margin-top: 10px;">
+                    <div class="form-section">
+                        <h4><i class="fas fa-plus-circle"></i> إضافة مادة جديدة</h4>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>اسم المادة <span class="required">*</span></label>
+                                <input type="text" id="subject-name" placeholder="أدخل اسم المادة">
+                            </div>
+                            <div class="form-group">
+                                <label>التصنيف</label>
+                                <select id="subject-category">
+                                    <option value="أدبي">أدبي</option>
+                                    <option value="علمي">علمي</option>
+                                    <option value="ديني">ديني</option>
+                                    <option value="لغات">لغات</option>
+                                    <option value="عام">عام</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>وصف المادة</label>
+                            <textarea id="subject-description" rows="3" placeholder="أدخل وصفاً للمادة..."></textarea>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>أيقونة</label>
+                                <select id="subject-icon">
+                                    <option value="fas fa-book">كتاب</option>
+                                    <option value="fas fa-brain">دماغ (فلسفة)</option>
+                                    <option value="fas fa-landmark">معلم (تاريخ)</option>
+                                    <option value="fas fa-globe-africa">كرة أرضية (جغرافيا)</option>
+                                    <option value="fas fa-mosque">مسجد (علوم إسلامية)</option>
+                                    <option value="fas fa-language">لغة</option>
+                                    <option value="fas fa-calculator">آلة حاسبة</option>
+                                    <option value="fas fa-flask">مختبر</option>
+                                    <option value="fas fa-palette">فنون</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>لون المادة</label>
+                                <input type="color" id="subject-color" value="#4CAF50">
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button class="btn btn-primary" onclick="addNewSubject()">
+                                <i class="fas fa-plus"></i> إضافة مادة
+                            </button>
+                            <button class="btn btn-secondary" onclick="clearSubjectForm()">
+                                <i class="fas fa-times"></i> مسح النموذج
+                            </button>
+                        </div>
                     </div>
                     
-                    <div class="form-actions">
-                        <button class="btn btn-primary" onclick="addNewSubject()">
-                            <i class="fas fa-plus"></i> إضافة مادة
-                        </button>
-                    </div>
-                    
-                    <h4 style="margin-top: 40px;">المواد الحالية:</h4>
-                    <div class="table-container">
-                        <table id="subjects-table">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>اسم المادة</th>
-                                    <th>الوصف</th>
-                                    <th>عدد الملفات</th>
-                                    <th>الإجراءات</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- سيتم ملؤها بالجافاسكريبت -->
-                            </tbody>
-                        </table>
+                    <div class="subjects-list">
+                        <h4><i class="fas fa-list"></i> المواد الحالية</h4>
+                        <div class="table-container">
+                            <table id="subjects-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>الاسم</th>
+                                        <th>التصنيف</th>
+                                        <th>عدد الملفات</th>
+                                        <th>تاريخ الإضافة</th>
+                                        <th>الإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- سيتم ملؤها بالجافاسكريبت -->
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
                 
-                <!-- إدارة الملفات -->
+                <!-- قسم الملفات -->
                 <div id="files" class="admin-section">
                     <h3><i class="fas fa-file-alt"></i> إدارة الملفات</h3>
                     
-                    <div class="form-group">
-                        <label>إضافة ملف جديد:</label>
-                        <select id="file-subject" style="margin-bottom: 10px;">
-                            <option value="">اختر المادة</option>
-                        </select>
-                        <input type="text" id="file-name" placeholder="اسم الملف" style="margin-bottom: 10px;">
-                        <input type="text" id="file-url" placeholder="رابط الملف (اختياري)">
+                    <div class="upload-section">
+                        <h4><i class="fas fa-upload"></i> رفع ملفات جديدة</h4>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>اختر المادة <span class="required">*</span></label>
+                                <select id="file-subject">
+                                    <option value="">اختر المادة</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>نوع الملف</label>
+                                <select id="file-type">
+                                    <option value="pdf">PDF</option>
+                                    <option value="docx">Word</option>
+                                    <option value="pptx">PowerPoint</option>
+                                    <option value="xlsx">Excel</option>
+                                    <option value="image">صورة</option>
+                                    <option value="other">أخرى</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>وصف الملف (اختياري)</label>
+                            <textarea id="file-description" rows="2" placeholder="أدخل وصفاً للملف..."></textarea>
+                        </div>
+                        
+                        <div class="file-upload-area" id="file-drop-area" onclick="document.getElementById('file-upload').click()">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <h4>اسحب وأفلت الملفات هنا أو انقر للاختيار</h4>
+                            <p>يمكنك رفع ملفات PDF, Word, PowerPoint, Excel, الصور</p>
+                            <p style="color: #7f8c8d; font-size: 0.9rem;">الحد الأقصى: 10 ميجابايت لكل ملف</p>
+                            <input type="file" id="file-upload" accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.jpg,.jpeg,.png" multiple>
+                        </div>
+                        
+                        <div class="file-preview" id="file-preview">
+                            <!-- سيتم عرض الملفات المحددة هنا -->
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button class="btn btn-primary" onclick="uploadFiles()" id="upload-btn" disabled>
+                                <i class="fas fa-upload"></i> رفع الملفات
+                            </button>
+                            <button class="btn btn-secondary" onclick="clearFileSelection()">
+                                <i class="fas fa-times"></i> مسح الاختيار
+                            </button>
+                        </div>
+                        
+                        <div class="upload-status" id="upload-status"></div>
                     </div>
                     
-                    <div class="form-actions">
-                        <button class="btn btn-primary" onclick="addNewFile()">
-                            <i class="fas fa-plus"></i> إضافة ملف
-                        </button>
-                    </div>
-                    
-                    <h4 style="margin-top: 40px;">الملفات الحالية:</h4>
-                    <div class="table-container">
-                        <table id="files-table">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>اسم الملف</th>
-                                    <th>المادة</th>
-                                    <th>تاريخ الرفع</th>
-                                    <th>الإجراءات</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- سيتم ملؤها بالجافاسكريبت -->
-                            </tbody>
-                        </table>
+                    <div class="files-list">
+                        <h4><i class="fas fa-list"></i> الملفات الحالية</h4>
+                        
+                        <div class="form-row" style="margin-bottom: 20px;">
+                            <div class="form-group">
+                                <input type="text" id="file-search" placeholder="ابحث في الملفات..." oninput="searchFiles()">
+                            </div>
+                            <div class="form-group">
+                                <select id="file-filter" onchange="filterFiles()">
+                                    <option value="all">جميع الملفات</option>
+                                    <option value="pdf">PDF فقط</option>
+                                    <option value="docx">Word فقط</option>
+                                    <option value="popular">الأكثر تحميلاً</option>
+                                    <option value="recent">الأحدث</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="table-container">
+                            <table id="files-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>اسم الملف</th>
+                                        <th>المادة</th>
+                                        <th>النوع</th>
+                                        <th>التحميلات</th>
+                                        <th>التاريخ</th>
+                                        <th>الإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- سيتم ملؤها بالجافاسكريبت -->
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
                 
-                <!-- إدارة المستخدمين -->
+                <!-- قسم المستخدمين -->
                 <div id="users" class="admin-section">
                     <h3><i class="fas fa-users"></i> إدارة المستخدمين</h3>
                     
-                    <div class="table-container">
-                        <table id="users-table">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>اسم المستخدم</th>
-                                    <th>الاسم</th>
-                                    <th>الدور</th>
-                                    <th>تاريخ الانضمام</th>
-                                    <th>آخر نشاط</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- سيتم ملؤها بالجافاسكريبت -->
-                            </tbody>
-                        </table>
+                    <div class="admin-grid">
+                        <div class="admin-card" onclick="showAllUsers()">
+                            <i class="fas fa-users"></i>
+                            <div class="stat-number" id="total-users">0</div>
+                            <p>إجمالي المستخدمين</p>
+                        </div>
+                        <div class="admin-card" onclick="showActiveUsers()">
+                            <i class="fas fa-user-check"></i>
+                            <div class="stat-number" id="active-users">0</div>
+                            <p>نشطون اليوم</p>
+                        </div>
+                        <div class="admin-card" onclick="showNewUsers()">
+                            <i class="fas fa-user-plus"></i>
+                            <div class="stat-number" id="new-users">0</div>
+                            <p>جدد هذا الشهر</p>
+                        </div>
+                        <div class="admin-card" onclick="showAdminUsers()">
+                            <i class="fas fa-user-shield"></i>
+                            <div class="stat-number" id="admin-users">0</div>
+                            <p>مسؤولون</p>
+                        </div>
+                    </div>
+                    
+                    <div class="users-list">
+                        <h4><i class="fas fa-list"></i> قائمة المستخدمين</h4>
+                        
+                        <div class="form-row" style="margin-bottom: 20px;">
+                            <div class="form-group">
+                                <input type="text" id="user-search" placeholder="ابحث في المستخدمين..." oninput="searchUsers()">
+                            </div>
+                            <div class="form-group">
+                                <select id="user-role-filter" onchange="filterUsersByRole()">
+                                    <option value="all">جميع المستخدمين</option>
+                                    <option value="admin">المسؤولون</option>
+                                    <option value="user">المستخدمون العاديون</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="table-container">
+                            <table id="users-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>اسم المستخدم</th>
+                                        <th>الاسم</th>
+                                        <th>الدور</th>
+                                        <th>تاريخ الانضمام</th>
+                                        <th>آخر نشاط</th>
+                                        <th>الحالة</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- سيتم ملؤها بالجافاسكريبت -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- قسم الإعدادات -->
+                <div id="settings" class="admin-section">
+                    <h3><i class="fas fa-cog"></i> إعدادات النظام</h3>
+                    
+                    <div class="settings-grid">
+                        <div class="setting-section">
+                            <h4><i class="fas fa-paint-brush"></i> إعدادات المظهر</h4>
+                            <div class="form-group">
+                                <label>سمة الموقع</label>
+                                <select id="theme-setting" onchange="updateTheme()">
+                                    <option value="light">فاتح</option>
+                                    <option value="dark">داكن</option>
+                                    <option value="auto">تلقائي</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>لون الموقع الرئيسي</label>
+                                <input type="color" id="primary-color" value="#4CAF50" onchange="updatePrimaryColor()">
+                            </div>
+                        </div>
+                        
+                        <div class="setting-section">
+                            <h4><i class="fas fa-upload"></i> إعدادات الرفع</h4>
+                            <div class="form-group">
+                                <label>الحد الأقصى لحجم الملف (ميجابايت)</label>
+                                <input type="number" id="max-file-size" value="10" min="1" max="100">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>الأنواع المسموحة</label>
+                                <div style="margin-top: 10px;">
+                                    <label style="display: block;">
+                                        <input type="checkbox" checked> PDF
+                                    </label>
+                                    <label style="display: block;">
+                                        <input type="checkbox" checked> Word
+                                    </label>
+                                    <label style="display: block;">
+                                        <input type="checkbox" checked> PowerPoint
+                                    </label>
+                                    <label style="display: block;">
+                                        <input type="checkbox" checked> Excel
+                                    </label>
+                                    <label style="display: block;">
+                                        <input type="checkbox" checked> الصور
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="backup-section">
+                        <h4><i class="fas fa-database"></i> النسخ الاحتياطي والاستعادة</h4>
+                        <p style="color: #7f8c8d; margin-bottom: 20px;">حافظ على بياناتك آمنة مع النسخ الاحتياطي المنتظم</p>
+                        
+                        <div class="backup-options">
+                            <div class="backup-option" onclick="createBackup()">
+                                <i class="fas fa-download"></i>
+                                <h4>إنشاء نسخة احتياطية</h4>
+                                <p>حفظ جميع البيانات في ملف JSON</p>
+                            </div>
+                            
+                            <div class="backup-option" onclick="document.getElementById('restore-file').click()">
+                                <i class="fas fa-upload"></i>
+                                <h4>استعادة نسخة</h4>
+                                <p>تحميل واستعادة بيانات سابقة</p>
+                                <input type="file" id="restore-file" accept=".json" style="display: none;" onchange="restoreBackup(this.files[0])">
+                            </div>
+                            
+                            <div class="backup-option" onclick="exportToCSV()">
+                                <i class="fas fa-file-csv"></i>
+                                <h4>تصدير كـ CSV</h4>
+                                <p>تصدير البيانات لتستخدمها في Excel</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="system-info">
+                        <h4><i class="fas fa-info-circle"></i> معلومات النظام</h4>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="info-label">إصدار النظام:</span>
+                                <span class="info-value">1.0.0</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">حجم قاعدة البيانات:</span>
+                                <span class="info-value" id="db-size">تحميل...</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">آخر تحديث:</span>
+                                <span class="info-value" id="last-update">-</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">الحالة:</span>
+                                <span class="status-badge status-active">يعمل بشكل طبيعي</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button class="btn btn-primary" onclick="saveSettings()">
+                            <i class="fas fa-save"></i> حفظ الإعدادات
+                        </button>
+                        <button class="btn btn-danger" onclick="resetSettings()">
+                            <i class="fas fa-undo"></i> إعادة تعيين
+                        </button>
+                        <button class="btn btn-warning" onclick="clearAllData()">
+                            <i class="fas fa-trash"></i> مسح جميع البيانات
+                        </button>
                     </div>
                 </div>
             </div>
@@ -481,9 +1094,12 @@
     
     <script src="db.js"></script>
     <script>
-        // التحقق من المسؤول
+        // ============================================
+        // إدارة تسجيل الدخول
+        // ============================================
+        
         document.addEventListener('DOMContentLoaded', async () => {
-            await database.init();
+            await initializeDatabase();
             checkAdminAccess();
         });
         
@@ -493,6 +1109,7 @@
             if (userId == 5795991022) {
                 // مسجل كمسؤول
                 showAdminPanel();
+                loadDashboard();
             } else {
                 // طلب كلمة المرور
                 showLogin();
@@ -502,29 +1119,59 @@
         function showLogin() {
             document.getElementById('login-screen').style.display = 'block';
             document.getElementById('admin-screen').style.display = 'none';
+            
+            // تعبئة كلمة المرور إذا كانت محفوظة
+            const savedPassword = localStorage.getItem('admin_password');
+            if (savedPassword) {
+                document.getElementById('admin-password').value = savedPassword;
+                document.getElementById('remember-me').checked = true;
+            }
+            
+            // التركيز على حقل الإدخال
+            document.getElementById('admin-password').focus();
         }
         
         function showAdminPanel() {
             document.getElementById('login-screen').style.display = 'none';
             document.getElementById('admin-screen').style.display = 'block';
-            loadAdminData();
         }
         
         function loginAdmin() {
             const password = document.getElementById('admin-password').value;
+            const rememberMe = document.getElementById('remember-me').checked;
+            const errorElement = document.getElementById('login-error');
             
             // كلمة المرور الافتراضية (يمكن تغييرها)
             if (password === 'admin123') {
+                // حفظ حالة تسجيل الدخول
                 localStorage.setItem('user_id', '5795991022');
                 localStorage.setItem('username', 'admin');
                 localStorage.setItem('role', 'admin');
+                
+                if (rememberMe) {
+                    localStorage.setItem('admin_password', password);
+                } else {
+                    localStorage.removeItem('admin_password');
+                }
+                
                 showAdminPanel();
+                loadDashboard();
             } else {
-                alert('كلمة المرور غير صحيحة');
+                errorElement.textContent = 'كلمة المرور غير صحيحة';
+                errorElement.classList.add('show');
+                
+                // اهتزاز الحقل
+                document.getElementById('admin-password').style.animation = 'shake 0.5s';
+                setTimeout(() => {
+                    document.getElementById('admin-password').style.animation = '';
+                }, 500);
             }
         }
         
+        // ============================================
         // إدارة الأقسام
+        // ============================================
+        
         function showSection(sectionId) {
             // إخفاء جميع الأقسام
             document.querySelectorAll('.admin-section').forEach(section => {
@@ -540,61 +1187,144 @@
             document.getElementById(sectionId).classList.add('active');
             
             // إضافة النشاط للرابط
-            event.target.classList.add('active');
+            document.getElementById(`nav-${sectionId}`).classList.add('active');
             
             // تحميل بيانات القسم
             switch(sectionId) {
                 case 'dashboard':
-                    refreshAdminStats();
+                    loadDashboard();
                     break;
                 case 'subjects':
-                    loadSubjectsTable();
+                    loadSubjects();
                     loadSubjectOptions();
                     break;
                 case 'files':
-                    loadFilesTable();
-                    loadSubjectOptions();
+                    loadFiles();
+                    loadSubjectOptionsForFiles();
                     break;
                 case 'users':
-                    loadUsersTable();
+                    loadUsers();
+                    break;
+                case 'settings':
+                    loadSettings();
                     break;
             }
         }
         
-        // تحميل بيانات المسؤول
-        async function loadAdminData() {
-            await refreshAdminStats();
-            await loadSubjectsTable();
-            await loadSubjectOptions();
-            await loadFilesTable();
-            await loadUsersTable();
+        // ============================================
+        // لوحة التحكم
+        // ============================================
+        
+        async function loadDashboard() {
+            try {
+                const data = await database.getDashboardData();
+                
+                // تحديث الإحصائيات
+                const statsHtml = `
+                    <div class="admin-card" onclick="showSection('subjects')">
+                        <i class="fas fa-book"></i>
+                        <div class="stat-number">${data.statistics.totalSubjects}</div>
+                        <p>مواد دراسية</p>
+                    </div>
+                    <div class="admin-card" onclick="showSection('files')">
+                        <i class="fas fa-file-alt"></i>
+                        <div class="stat-number">${data.statistics.totalFiles}</div>
+                        <p>ملف</p>
+                    </div>
+                    <div class="admin-card" onclick="showSection('users')">
+                        <i class="fas fa-users"></i>
+                        <div class="stat-number">${data.statistics.totalUsers}</div>
+                        <p>مستخدم</p>
+                    </div>
+                    <div class="admin-card" onclick="showPopularFiles()">
+                        <i class="fas fa-download"></i>
+                        <div class="stat-number">${data.statistics.totalDownloads}</div>
+                        <p>تحميل</p>
+                    </div>
+                `;
+                
+                document.getElementById('dashboard-stats').innerHTML = statsHtml;
+                
+                // تحديث النشاط الحديث
+                updateRecentActivity(data.recentFiles);
+                
+            } catch (error) {
+                console.error('❌ خطأ في تحميل لوحة التحكم:', error);
+            }
         }
         
-        async function refreshAdminStats() {
-            const stats = await database.getStatistics();
-            
-            document.getElementById('admin-user-count').textContent = stats.userCount;
-            document.getElementById('admin-subject-count').textContent = stats.subjectCount;
-            document.getElementById('admin-file-count').textContent = stats.fileCount;
-        }
-        
-        // إدارة المواد
-        async function loadSubjectsTable() {
-            const subjects = await database.getAllSubjects();
-            const tbody = document.querySelector('#subjects-table tbody');
-            
+        function updateRecentActivity(files) {
+            const tbody = document.querySelector('#recent-activity-table tbody');
             if (!tbody) return;
             
             let html = '';
-            for (const subject of subjects) {
-                const files = await database.getFilesBySubject(subject.id);
+            files.slice(0, 10).forEach(file => {
+                const subject = allSubjects.find(s => s.id === file.subject_id);
+                const subjectName = subject ? subject.name : 'غير معروف';
                 
                 html += `
                     <tr>
+                        <td><i class="fas fa-file-alt"></i></td>
+                        <td>
+                            <strong>${file.file_name}</strong><br>
+                            <small>${subjectName}</small>
+                        </td>
+                        <td>${formatDate(file.upload_date)}</td>
+                        <td>
+                            <button class="action-btn view" onclick="previewFile(${file.id}, '${file.file_name}')">
+                                <i class="fas fa-eye"></i> معاينة
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            tbody.innerHTML = html || '<tr><td colspan="4" style="text-align: center;">لا يوجد نشاط حديث</td></tr>';
+        }
+        
+        function refreshDashboard() {
+            loadDashboard();
+            showMessage('تم تحديث لوحة التحكم', 'success');
+        }
+        
+        function exportDashboardData() {
+            window.exportToCSV();
+        }
+        
+        // ============================================
+        // إدارة المواد
+        // ============================================
+        
+        async function loadSubjects() {
+            try {
+                allSubjects = await database.getAllSubjects();
+                updateSubjectsTable();
+            } catch (error) {
+                console.error('❌ خطأ في تحميل المواد:', error);
+            }
+        }
+        
+        function updateSubjectsTable() {
+            const tbody = document.querySelector('#subjects-table tbody');
+            if (!tbody) return;
+            
+            let html = '';
+            allSubjects.forEach(subject => {
+                html += `
+                    <tr>
                         <td>${subject.id}</td>
-                        <td>${subject.name}</td>
-                        <td>${subject.description || '-'}</td>
-                        <td>${files.length}</td>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <i class="${subject.icon || 'fas fa-book'}" style="color: ${subject.color || '#4CAF50'}"></i>
+                                <div>
+                                    <strong>${subject.name}</strong><br>
+                                    <small>${subject.description || 'لا يوجد وصف'}</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>${subject.category || 'عام'}</td>
+                        <td>${subject.files_count || 0}</td>
+                        <td>${formatDate(subject.created_at)}</td>
                         <td>
                             <div class="action-buttons">
                                 <button class="action-btn edit" onclick="editSubject(${subject.id})">
@@ -603,13 +1333,16 @@
                                 <button class="action-btn delete" onclick="deleteSubject(${subject.id})">
                                     <i class="fas fa-trash"></i> حذف
                                 </button>
+                                <button class="action-btn view" onclick="viewSubjectFiles(${subject.id})">
+                                    <i class="fas fa-eye"></i> عرض الملفات
+                                </button>
                             </div>
                         </td>
                     </tr>
                 `;
-            }
+            });
             
-            tbody.innerHTML = html || '<tr><td colspan="5" style="text-align: center;">لا توجد مواد</td></tr>';
+            tbody.innerHTML = html || '<tr><td colspan="6" style="text-align: center;">لا توجد مواد</td></tr>';
         }
         
         async function loadSubjectOptions() {
@@ -619,37 +1352,54 @@
             if (!select) return;
             
             let html = '<option value="">اختر المادة</option>';
-            for (const subject of subjects) {
+            subjects.forEach(subject => {
                 html += `<option value="${subject.id}">${subject.name}</option>`;
-            }
+            });
             
             select.innerHTML = html;
         }
         
         async function addNewSubject() {
             const name = document.getElementById('subject-name').value.trim();
-            const desc = document.getElementById('subject-desc').value.trim();
+            const description = document.getElementById('subject-description').value.trim();
+            const category = document.getElementById('subject-category').value;
+            const icon = document.getElementById('subject-icon').value;
+            const color = document.getElementById('subject-color').value;
             
             if (!name) {
-                alert('الرجاء إدخال اسم المادة');
+                showMessage('الرجاء إدخال اسم المادة', 'error');
+                document.getElementById('subject-name').focus();
                 return;
             }
             
             try {
                 await database.addSubject({
                     name: name,
-                    description: desc
+                    description: description,
+                    category: category,
+                    icon: icon,
+                    color: color,
+                    created_at: new Date().toISOString(),
+                    files_count: 0
                 });
                 
-                alert('تم إضافة المادة بنجاح');
-                document.getElementById('subject-name').value = '';
-                document.getElementById('subject-desc').value = '';
-                await loadSubjectsTable();
+                showMessage('تم إضافة المادة بنجاح', 'success');
+                clearSubjectForm();
+                await loadSubjects();
                 await loadSubjectOptions();
-                await refreshAdminStats();
+                await database.updateStatistics();
+                
             } catch (error) {
-                alert('خطأ في إضافة المادة: ' + error.message);
+                showMessage('خطأ في إضافة المادة: ' + error.message, 'error');
             }
+        }
+        
+        function clearSubjectForm() {
+            document.getElementById('subject-name').value = '';
+            document.getElementById('subject-description').value = '';
+            document.getElementById('subject-category').value = 'أدبي';
+            document.getElementById('subject-icon').value = 'fas fa-book';
+            document.getElementById('subject-color').value = '#4CAF50';
         }
         
         async function editSubject(id) {
@@ -660,72 +1410,89 @@
             if (!newName) return;
             
             const newDesc = prompt('أدخل الوصف الجديد:', subject.description || '');
-            
-            subject.name = newName;
-            subject.description = newDesc;
+            const newCategory = prompt('أدخل التصنيف الجديد:', subject.category || 'أدبي');
             
             try {
-                await database.addSubject(subject); // سيتحديث لأن نفس الـ ID
-                alert('تم تعديل المادة بنجاح');
-                await loadSubjectsTable();
+                await database.updateSubject(id, {
+                    name: newName,
+                    description: newDesc,
+                    category: newCategory
+                });
+                
+                showMessage('تم تعديل المادة بنجاح', 'success');
+                await loadSubjects();
                 await loadSubjectOptions();
+                
             } catch (error) {
-                alert('خطأ في تعديل المادة');
+                showMessage('خطأ في تعديل المادة', 'error');
             }
         }
         
         async function deleteSubject(id) {
-            if (!confirm('هل أنت متأكد من حذف هذه المادة؟ سيتم حذف جميع ملفاتها أيضًا.')) {
+            if (!confirm('⚠️ هل أنت متأكد من حذف هذه المادة؟\nسيتم حذف جميع ملفاتها أيضاً.')) {
                 return;
             }
             
             try {
-                // حذف ملفات المادة أولاً
-                const files = await database.getFilesBySubject(id);
-                for (const file of files) {
-                    await database.deleteFile(file.id);
-                }
-                
-                // حذف المادة
                 await database.deleteSubject(id);
-                
-                alert('تم حذف المادة بنجاح');
-                await loadSubjectsTable();
+                showMessage('تم حذف المادة بنجاح', 'success');
+                await loadSubjects();
                 await loadSubjectOptions();
-                await refreshAdminStats();
+                
             } catch (error) {
-                alert('خطأ في حذف المادة');
+                showMessage('خطأ في حذف المادة', 'error');
             }
         }
         
+        function viewSubjectFiles(subjectId) {
+            window.open(`index.html#subject-${subjectId}`, '_blank');
+        }
+        
+        // ============================================
         // إدارة الملفات
-        async function loadFilesTable() {
-            const subjects = await database.getAllSubjects();
+        // ============================================
+        
+        let selectedFiles = [];
+        
+        async function loadFiles() {
+            try {
+                allFiles = await database.getAllFiles();
+                updateFilesTable();
+            } catch (error) {
+                console.error('❌ خطأ في تحميل الملفات:', error);
+            }
+        }
+        
+        function updateFilesTable() {
             const tbody = document.querySelector('#files-table tbody');
-            
             if (!tbody) return;
             
-            let allFiles = [];
-            for (const subject of subjects) {
-                const files = await database.getFilesBySubject(subject.id);
-                for (const file of files) {
-                    file.subject_name = subject.name;
-                    allFiles.push(file);
-                }
-            }
-            
             let html = '';
-            for (const file of allFiles) {
+            allFiles.forEach(file => {
+                const subject = allSubjects.find(s => s.id === file.subject_id);
+                const subjectName = subject ? subject.name : 'غير معروف';
+                const fileType = getFileType(file.file_name);
+                
                 html += `
                     <tr>
                         <td>${file.id}</td>
-                        <td>${file.file_name}</td>
-                        <td>${file.subject_name}</td>
-                        <td>${file.upload_date || '-'}</td>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <i class="${getFileIcon(file.file_name)}"></i>
+                                <div>
+                                    <strong>${file.file_name}</strong><br>
+                                    <small>${file.description || 'لا يوجد وصف'}</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>${subjectName}</td>
+                        <td>${fileType}</td>
+                        <td>${file.downloads || 0}</td>
+                        <td>${formatDate(file.upload_date)}</td>
                         <td>
                             <div class="action-buttons">
-                                <button class="action-btn edit" onclick="editFile(${file.id})">
-                                    <i class="fas fa-edit"></i> تعديل
+                                <button class="action-btn download" onclick="downloadFile(${file.id}, '${file.file_name}')">
+                                    <i class="fas fa-download"></i> تحميل
                                 </button>
                                 <button class="action-btn delete" onclick="deleteFile(${file.id})">
                                     <i class="fas fa-trash"></i> حذف
@@ -734,82 +1501,668 @@
                         </td>
                     </tr>
                 `;
-            }
+            });
             
-            tbody.innerHTML = html || '<tr><td colspan="5" style="text-align: center;">لا توجد ملفات</td></tr>';
+            tbody.innerHTML = html || '<tr><td colspan="7" style="text-align: center;">لا توجد ملفات</td></tr>';
         }
         
-        async function addNewFile() {
-            const subjectId = document.getElementById('file-subject').value;
-            const fileName = document.getElementById('file-name').value.trim();
-            const fileUrl = document.getElementById('file-url').value.trim();
+        function loadSubjectOptionsForFiles() {
+            loadSubjectOptions();
+        }
+        
+        // إدارة رفع الملفات
+        document.getElementById('file-upload').addEventListener('change', handleFileSelect);
+        
+        function handleFileSelect(e) {
+            const files = Array.from(e.target.files);
+            selectedFiles = files;
+            updateFilePreview();
+        }
+        
+        function updateFilePreview() {
+            const preview = document.getElementById('file-preview');
+            const uploadBtn = document.getElementById('upload-btn');
             
-            if (!subjectId || !fileName) {
-                alert('الرجاء اختيار المادة وإدخال اسم الملف');
+            if (selectedFiles.length === 0) {
+                preview.classList.remove('show');
+                uploadBtn.disabled = true;
                 return;
             }
             
-            try {
-                await database.addFile({
-                    subject_id: parseInt(subjectId),
-                    file_name: fileName,
-                    file_url: fileUrl || '#',
-                    upload_date: new Date().toISOString().split('T')[0]
-                });
-                
-                alert('تم إضافة الملف بنجاح');
-                document.getElementById('file-name').value = '';
-                document.getElementById('file-url').value = '';
-                await loadFilesTable();
-                await refreshAdminStats();
-            } catch (error) {
-                alert('خطأ في إضافة الملف: ' + error.message);
-            }
+            let html = '<h5>الملفات المحددة:</h5>';
+            
+            selectedFiles.forEach((file, index) => {
+                const fileSize = formatFileSize(file.size);
+                html += `
+                    <div class="file-preview-item">
+                        <div class="file-preview-info">
+                            <i class="${getFileIcon(file.name)}"></i>
+                            <div>
+                                <div class="file-preview-name">${file.name}</div>
+                                <div class="file-preview-size">${fileSize}</div>
+                            </div>
+                        </div>
+                        <button class="action-btn delete" onclick="removeFile(${index})">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                `;
+            });
+            
+            preview.innerHTML = html;
+            preview.classList.add('show');
+            uploadBtn.disabled = false;
         }
         
-        async function editFile(id) {
-            // للتبسيط، في الإصدار الحقيقي ستحتاج لتخزين الملفات بشكل مختلف
-            alert('تعديل الملفات غير متاح في النسخة التجريبية');
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 بايت';
+            const k = 1024;
+            const sizes = ['بايت', 'كيلوبايت', 'ميجابايت', 'جيجابايت'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+        
+        function removeFile(index) {
+            selectedFiles.splice(index, 1);
+            updateFilePreview();
+        }
+        
+        function clearFileSelection() {
+            selectedFiles = [];
+            document.getElementById('file-upload').value = '';
+            updateFilePreview();
+            document.getElementById('file-subject').value = '';
+            document.getElementById('file-description').value = '';
+        }
+        
+        async function uploadFiles() {
+            const subjectId = document.getElementById('file-subject').value;
+            const description = document.getElementById('file-description').value;
+            
+            if (!subjectId) {
+                showMessage('الرجاء اختيار المادة', 'error');
+                return;
+            }
+            
+            if (selectedFiles.length === 0) {
+                showMessage('الرجاء اختيار ملفات للرفع', 'error');
+                return;
+            }
+            
+            const status = document.getElementById('upload-status');
+            const progressBar = document.createElement('div');
+            progressBar.className = 'progress-bar';
+            progressBar.innerHTML = '<div class="progress"></div>';
+            
+            status.innerHTML = `
+                <div class="uploading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    جاري رفع ${selectedFiles.length} ملف...
+                </div>
+            `;
+            status.appendChild(progressBar);
+            status.classList.add('show');
+            
+            let uploadedCount = 0;
+            const totalFiles = selectedFiles.length;
+            
+            for (const file of selectedFiles) {
+                try {
+                    // محاكاة رفع الملف (في الإصدار الحقيقي هنا سيكون اتصال بالسيرفر)
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                    
+                    // إضافة الملف إلى قاعدة البيانات
+                    await database.addFile({
+                        subject_id: parseInt(subjectId),
+                        file_name: file.name,
+                        file_type: getFileExtension(file.name),
+                        file_size: formatFileSize(file.size),
+                        file_url: '#',
+                        description: description,
+                        upload_date: new Date().toISOString(),
+                        downloads: 0,
+                        views: 0
+                    });
+                    
+                    uploadedCount++;
+                    
+                    // تحديث شريط التقدم
+                    const progress = (uploadedCount / totalFiles) * 100;
+                    progressBar.querySelector('.progress').style.width = `${progress}%`;
+                    
+                } catch (error) {
+                    console.error('❌ خطأ في رفع الملف:', error);
+                }
+            }
+            
+            // إظهار رسالة النجاح
+            status.innerHTML = `
+                <div class="success">
+                    <i class="fas fa-check-circle"></i>
+                    تم رفع ${uploadedCount} من ${totalFiles} ملف بنجاح
+                </div>
+            `;
+            status.classList.add('success');
+            
+            // تحديث الجدول
+            await loadFiles();
+            
+            // إعادة تعيين النموذج بعد 3 ثوان
+            setTimeout(() => {
+                status.classList.remove('show');
+                clearFileSelection();
+                document.getElementById('upload-status').classList.remove('success');
+            }, 3000);
+        }
+        
+        function getFileExtension(fileName) {
+            return fileName.split('.').pop().toLowerCase();
+        }
+        
+        function searchFiles() {
+            const query = document.getElementById('file-search').value.toLowerCase();
+            const rows = document.querySelectorAll('#files-table tbody tr');
+            
+            rows.forEach(row => {
+                const fileName = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                if (fileName.includes(query)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+        
+        function filterFiles() {
+            const filter = document.getElementById('file-filter').value;
+            const rows = document.querySelectorAll('#files-table tbody tr');
+            
+            rows.forEach(row => {
+                const fileType = row.querySelector('td:nth-child(4)').textContent;
+                const downloads = parseInt(row.querySelector('td:nth-child(5)').textContent);
+                
+                let show = true;
+                
+                switch (filter) {
+                    case 'pdf':
+                        show = fileType.includes('PDF');
+                        break;
+                    case 'docx':
+                        show = fileType.includes('Word');
+                        break;
+                    case 'popular':
+                        show = downloads > 50;
+                        break;
+                    case 'recent':
+                        // يمكن إضافة منطق للبحث عن الملفات الحديثة
+                        break;
+                }
+                
+                row.style.display = show ? '' : 'none';
+            });
         }
         
         async function deleteFile(id) {
-            if (!confirm('هل أنت متأكد من حذف هذا الملف؟')) {
+            if (!confirm('⚠️ هل أنت متأكد من حذف هذا الملف؟')) {
                 return;
             }
             
             try {
                 await database.deleteFile(id);
-                alert('تم حذف الملف بنجاح');
-                await loadFilesTable();
-                await refreshAdminStats();
+                showMessage('تم حذف الملف بنجاح', 'success');
+                await loadFiles();
+                
             } catch (error) {
-                alert('خطأ في حذف الملف');
+                showMessage('خطأ في حذف الملف', 'error');
             }
         }
         
+        // ============================================
         // إدارة المستخدمين
-        async function loadUsersTable() {
-            const users = await database.getAllUsers();
+        // ============================================
+        
+        async function loadUsers() {
+            try {
+                const users = await database.getAllUsers();
+                updateUsersTable(users);
+                updateUserStats(users);
+            } catch (error) {
+                console.error('❌ خطأ في تحميل المستخدمين:', error);
+            }
+        }
+        
+        function updateUsersTable(users) {
             const tbody = document.querySelector('#users-table tbody');
-            
             if (!tbody) return;
             
             let html = '';
-            for (const user of users) {
+            users.forEach(user => {
+                const lastActive = new Date(user.last_active);
+                const now = new Date();
+                const diffHours = Math.floor((now - lastActive) / (1000 * 60 * 60));
+                const isActive = diffHours < 24;
+                
                 html += `
                     <tr>
-                        <td>${user.user_id}</td>
-                        <td>${user.username || '-'}</td>
-                        <td>${user.first_name || '-'}</td>
-                        <td>${user.role || 'user'}</td>
-                        <td>${user.joined_at ? user.joined_at.split('T')[0] : '-'}</td>
-                        <td>${user.last_active ? user.last_active.split('T')[0] : '-'}</td>
+                        <td>${user.id}</td>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <i class="fas fa-user"></i>
+                                <div>
+                                    <strong>${user.username || 'بدون اسم مستخدم'}</strong><br>
+                                    <small>${user.user_id}</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>${user.first_name || 'بدون اسم'}</td>
+                        <td>
+                            <span class="status-badge ${user.role === 'admin' ? 'status-active' : 'status-inactive'}">
+                                ${user.role === 'admin' ? 'مسؤول' : 'مستخدم'}
+                            </span>
+                        </td>
+                        <td>${formatDate(user.joined_at)}</td>
+                        <td>${formatDate(user.last_active)}</td>
+                        <td>
+                            <span class="status-badge ${isActive ? 'status-active' : 'status-inactive'}">
+                                ${isActive ? 'نشط' : 'غير نشط'}
+                            </span>
+                        </td>
                     </tr>
                 `;
+            });
+            
+            tbody.innerHTML = html || '<tr><td colspan="7" style="text-align: center;">لا يوجد مستخدمين</td></tr>';
+        }
+        
+        function updateUserStats(users) {
+            const now = new Date();
+            const activeUsers = users.filter(user => {
+                const lastActive = new Date(user.last_active);
+                const diffHours = Math.floor((now - lastActive) / (1000 * 60 * 60));
+                return diffHours < 24;
+            });
+            
+            const thisMonth = new Date().getMonth();
+            const newUsers = users.filter(user => {
+                const joinedDate = new Date(user.joined_at);
+                return joinedDate.getMonth() === thisMonth;
+            });
+            
+            const adminUsers = users.filter(user => user.role === 'admin');
+            
+            document.getElementById('total-users').textContent = users.length;
+            document.getElementById('active-users').textContent = activeUsers.length;
+            document.getElementById('new-users').textContent = newUsers.length;
+            document.getElementById('admin-users').textContent = adminUsers.length;
+        }
+        
+        function searchUsers() {
+            const query = document.getElementById('user-search').value.toLowerCase();
+            const rows = document.querySelectorAll('#users-table tbody tr');
+            
+            rows.forEach(row => {
+                const username = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                const name = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+                
+                if (username.includes(query) || name.includes(query)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+        
+        function filterUsersByRole() {
+            const role = document.getElementById('user-role-filter').value;
+            const rows = document.querySelectorAll('#users-table tbody tr');
+            
+            rows.forEach(row => {
+                const userRole = row.querySelector('td:nth-child(4)').textContent;
+                const show = role === 'all' || 
+                    (role === 'admin' && userRole.includes('مسؤول')) ||
+                    (role === 'user' && userRole.includes('مستخدم'));
+                
+                row.style.display = show ? '' : 'none';
+            });
+        }
+        
+        // ============================================
+        // الإعدادات
+        // ============================================
+        
+        function loadSettings() {
+            // تحميل الإعدادات المحفوظة
+            const settings = JSON.parse(localStorage.getItem('admin_settings') || '{}');
+            
+            document.getElementById('theme-setting').value = settings.theme || 'light';
+            document.getElementById('primary-color').value = settings.primaryColor || '#4CAF50';
+            document.getElementById('max-file-size').value = settings.maxFileSize || 10;
+            
+            // تحديث معلومات النظام
+            updateSystemInfo();
+        }
+        
+        function saveSettings() {
+            const settings = {
+                theme: document.getElementById('theme-setting').value,
+                primaryColor: document.getElementById('primary-color').value,
+                maxFileSize: document.getElementById('max-file-size').value,
+                lastUpdated: new Date().toISOString()
+            };
+            
+            localStorage.setItem('admin_settings', JSON.stringify(settings));
+            showMessage('تم حفظ الإعدادات بنجاح', 'success');
+            
+            // تطبيق التغييرات
+            applySettings();
+        }
+        
+        function applySettings() {
+            const settings = JSON.parse(localStorage.getItem('admin_settings') || '{}');
+            
+            // تطبيق السمة
+            if (settings.theme === 'dark') {
+                document.body.classList.add('dark-theme');
+            } else {
+                document.body.classList.remove('dark-theme');
             }
             
-            tbody.innerHTML = html || '<tr><td colspan="6" style="text-align: center;">لا يوجد مستخدمين</td></tr>';
+            // تطبيق اللون الأساسي
+            document.documentElement.style.setProperty('--primary-color', settings.primaryColor);
         }
+        
+        function resetSettings() {
+            if (confirm('⚠️ هل أنت متأكد من إعادة تعيين جميع الإعدادات؟')) {
+                localStorage.removeItem('admin_settings');
+                loadSettings();
+                showMessage('تم إعادة تعيين الإعدادات', 'success');
+            }
+        }
+        
+        async function clearAllData() {
+            if (!confirm('⚠️ ⚠️ ⚠️\nهذا الإجراء سيمسح جميع البيانات ولا يمكن التراجع عنه!\nهل أنت متأكد؟')) {
+                return;
+            }
+            
+            try {
+                // مسح قاعدة البيانات المحلية
+                const request = indexedDB.deleteDatabase('subjects_database_v3');
+                
+                request.onsuccess = () => {
+                    showMessage('تم مسح جميع البيانات بنجاح', 'success');
+                    setTimeout(() => {
+                        location.reload();
+                    }, 2000);
+                };
+                
+                request.onerror = (error) => {
+                    showMessage('خطأ في مسح البيانات: ' + error, 'error');
+                };
+                
+            } catch (error) {
+                showMessage('خطأ في مسح البيانات', 'error');
+            }
+        }
+        
+        function updateSystemInfo() {
+            // حجم قاعدة البيانات (تقدير)
+            const dbSize = localStorage.length;
+            document.getElementById('db-size').textContent = formatFileSize(dbSize * 2); // تقدير تقريبي
+            
+            // آخر تحديث
+            const lastUpdate = localStorage.getItem('admin_settings_last_update');
+            document.getElementById('last-update').textContent = lastUpdate ? formatDate(lastUpdate) : 'لم يتم التحديث';
+        }
+        
+        // ============================================
+        // النسخ الاحتياطي
+        // ============================================
+        
+        async function createBackup() {
+            try {
+                const backup = await window.backupDatabase();
+                showMessage(`تم إنشاء النسخة الاحتياطية بنجاح`, 'success');
+            } catch (error) {
+                showMessage('خطأ في إنشاء النسخة الاحتياطية: ' + error.message, 'error');
+            }
+        }
+        
+        async function restoreBackup(file) {
+            if (!confirm('⚠️ هل أنت متأكد من استعادة النسخة الاحتياطية؟\nسيتم استبدال جميع البيانات الحالية.')) {
+                return;
+            }
+            
+            try {
+                await window.restoreDatabase(file);
+                showMessage('تم استعادة النسخة الاحتياطية بنجاح', 'success');
+                setTimeout(() => {
+                    location.reload();
+                }, 2000);
+            } catch (error) {
+                showMessage('خطأ في استعادة النسخة الاحتياطية: ' + error.message, 'error');
+            }
+        }
+        
+        // ============================================
+        // أدوات مساعدة
+        // ============================================
+        
+        function formatDate(dateString) {
+            if (!dateString) return 'غير معروف';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('ar-EG');
+        }
+        
+        function getFileIcon(fileName) {
+            const ext = fileName.split('.').pop().toLowerCase();
+            
+            const iconMap = {
+                'pdf': 'fas fa-file-pdf',
+                'doc': 'fas fa-file-word',
+                'docx': 'fas fa-file-word',
+                'xls': 'fas fa-file-excel',
+                'xlsx': 'fas fa-file-excel',
+                'ppt': 'fas fa-file-powerpoint',
+                'pptx': 'fas fa-file-powerpoint',
+                'jpg': 'fas fa-file-image',
+                'jpeg': 'fas fa-file-image',
+                'png': 'fas fa-file-image',
+                'zip': 'fas fa-file-archive',
+                'rar': 'fas fa-file-archive'
+            };
+            
+            return iconMap[ext] || 'fas fa-file';
+        }
+        
+        function getFileType(fileName) {
+            const ext = fileName.split('.').pop().toLowerCase();
+            
+            const typeMap = {
+                'pdf': 'PDF',
+                'doc': 'Word',
+                'docx': 'Word',
+                'xls': 'Excel',
+                'xlsx': 'Excel',
+                'ppt': 'PowerPoint',
+                'pptx': 'PowerPoint',
+                'jpg': 'صورة',
+                'jpeg': 'صورة',
+                'png': 'صورة',
+                'zip': 'مضغوط',
+                'rar': 'مضغوط'
+            };
+            
+            return typeMap[ext] || 'ملف';
+        }
+        
+        function showMessage(text, type = 'success') {
+            // إنشاء عنصر الرسالة
+            const message = document.createElement('div');
+            message.className = `message ${type}`;
+            message.innerHTML = `
+                <div class="message-content">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                    <span>${text}</span>
+                </div>
+                <button onclick="this.parentElement.remove()" class="close-message">&times;</button>
+            `;
+            
+            // إضافة إلى الصفحة
+            const container = document.getElementById('messages-container') || createMessagesContainer();
+            container.appendChild(message);
+            
+            // إزالة تلقائية بعد 5 ثوان
+            setTimeout(() => {
+                if (message.parentElement) {
+                    message.remove();
+                }
+            }, 5000);
+        }
+        
+        function createMessagesContainer() {
+            const container = document.createElement('div');
+            container.id = 'messages-container';
+            container.className = 'messages-container';
+            document.body.appendChild(container);
+            return container;
+        }
+        
+        // ============================================
+        // إضافة أنماط CSS ديناميكية
+        // ============================================
+        
+        const adminStyles = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+                20%, 40%, 60%, 80% { transform: translateX(5px); }
+            }
+            
+            .messages-container {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 10000;
+                max-width: 400px;
+            }
+            
+            .message {
+                background: white;
+                border-radius: 10px;
+                padding: 15px 20px;
+                margin-bottom: 10px;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                animation: slideIn 0.3s ease;
+                border-right: 5px solid #4CAF50;
+            }
+            
+            .message.error {
+                border-right-color: #e74c3c;
+            }
+            
+            .message.info {
+                border-right-color: #3498db;
+            }
+            
+            .message-content {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+            
+            .message i {
+                font-size: 1.2rem;
+            }
+            
+            .message.success i {
+                color: #4CAF50;
+            }
+            
+            .message.error i {
+                color: #e74c3c;
+            }
+            
+            .message.info i {
+                color: #3498db;
+            }
+            
+            .close-message {
+                background: none;
+                border: none;
+                font-size: 1.5rem;
+                cursor: pointer;
+                color: #7f8c8d;
+                padding: 0;
+                width: 30px;
+                height: 30px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                transition: all 0.3s ease;
+            }
+            
+            .close-message:hover {
+                background: #f8f9fa;
+                color: #333;
+            }
+            
+            @keyframes slideIn {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+            
+            .dark-theme {
+                background: #1a1a1a;
+                color: #ffffff;
+            }
+            
+            .dark-theme .admin-panel {
+                background: #2d2d2d;
+                color: #ffffff;
+            }
+            
+            .dark-theme input,
+            .dark-theme select,
+            .dark-theme textarea {
+                background: #3d3d3d;
+                color: #ffffff;
+                border-color: #555;
+            }
+            
+            .dark-theme table {
+                background: #2d2d2d;
+                color: #ffffff;
+            }
+            
+            .dark-theme th {
+                background: #3d3d3d;
+                color: #ffffff;
+            }
+            
+            .dark-theme tr:hover {
+                background: #3d3d3d;
+            }
+            
+            .dark-theme .btn {
+                filter: brightness(0.9);
+            }
+        `;
+        
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = adminStyles;
+        document.head.appendChild(styleSheet);
+        
+        console.log('🚀 تم تحميل لوحة التحكم بنجاح');
     </script>
 </body>
-  </html>
+    </html>
