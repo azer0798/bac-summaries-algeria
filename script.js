@@ -462,3 +462,220 @@ window.loadSubjects = () => loadSubjectsFromAPI();
 window.viewSubject = viewSubject;
 window.searchSubjects = searchSubjects;
 window.database = database;
+// عرض ملف PDF
+async function viewPDF(fileId, fileName, fileUrl) {
+    // حفظ في سجل المشاهدة
+    const viewHistory = JSON.parse(localStorage.getItem('pdf_view_history') || '[]');
+    viewHistory.unshift({
+        id: fileId,
+        name: fileName,
+        date: new Date().toISOString(),
+        url: fileUrl
+    });
+    
+    // الاحتفاظ بآخر 20 ملف
+    localStorage.setItem('pdf_view_history', JSON.stringify(viewHistory.slice(0, 20)));
+    
+    // الانتقال إلى صفحة المعاينة
+    window.open(`pdf-viewer.html?id=${fileId}&name=${encodeURIComponent(fileName)}&url=${encodeURIComponent(fileUrl || '#')}`, '_blank');
+}
+
+// تعديل دالة renderFiles لعرض زر المعاينة
+function renderFiles(files) {
+    const container = document.getElementById('files-container');
+    
+    if (!files || files.length === 0) {
+        container.innerHTML = `
+            <div class="no-files">
+                <i class="fas fa-folder-open"></i>
+                <h3>لا توجد ملفات لهذه المادة بعد</h3>
+                <p>سيتم إضافة الملفات قريباً</p>
+            </div>
+        `;
+        return;
+    }
+
+    let html = '';
+    files.forEach(file => {
+        const fileIcon = getFileIcon(file.file_name || file.name);
+        const fileName = file.file_name || file.name;
+        const fileSize = file.file_size || 'غير معروف';
+        const downloads = file.downloads || 0;
+        const isPDF = (file.file_name || file.name).toLowerCase().endsWith('.pdf');
+        
+        html += `
+            <div class="file-card">
+                <div class="file-icon">
+                    <i class="${fileIcon}"></i>
+                </div>
+                <div class="file-info">
+                    <h4>${fileName}</h4>
+                    <div class="file-meta">
+                        <span><i class="fas fa-hdd"></i> ${fileSize}</span>
+                        <span><i class="fas fa-download"></i> ${downloads}</span>
+                        <span><i class="fas fa-calendar"></i> ${file.upload_date || file.date || ''}</span>
+                        ${isPDF ? '<span class="pdf-badge"><i class="fas fa-file-pdf"></i> PDF</span>' : ''}
+                    </div>
+                </div>
+                <div class="file-actions">
+                    ${isPDF ? `
+                        <button class="preview-btn" onclick="viewPDF(${file.id}, '${fileName}', '${file.file_url || '#'}')">
+                            <i class="fas fa-eye"></i> معاينة
+                        </button>
+                    ` : ''}
+                    <button class="download-btn" onclick="handleDownload(${file.id}, '${fileName}')">
+                        <i class="fas fa-download"></i> تحميل
+                    </button>
+                </div>
+            </div>
+        `;
+    });
+
+    container.innerHTML = html;
+}
+
+// CSS إضافي لزر المعاينة
+const pdfStyles = `
+.file-actions {
+    display: flex;
+    gap: 10px;
+    margin-right: auto;
+}
+
+.preview-btn {
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.3s ease;
+}
+
+.preview-btn:hover {
+    background: #2980b9;
+    transform: scale(1.05);
+}
+
+.pdf-badge {
+    background: #e74c3c;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 0.8rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.recent-pdfs {
+    margin: 30px 0;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.recent-pdfs h3 {
+    margin-bottom: 15px;
+    color: #2c3e50;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.pdf-history-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.pdf-history-item {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #3498db;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.pdf-history-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.pdf-history-name {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 5px;
+}
+
+.pdf-history-date {
+    font-size: 0.85rem;
+    color: #7f8c8d;
+}
+
+.pdf-history-actions {
+    display: flex;
+    gap: 5px;
+}
+`;
+
+// إضافة الأنماط
+const styleSheet = document.createElement('style');
+styleSheet.textContent = pdfStyles;
+document.head.appendChild(styleSheet);
+
+// دالة لعرض سجل المشاهدة
+function showRecentPDFs() {
+    const viewHistory = JSON.parse(localStorage.getItem('pdf_view_history') || '[]');
+    
+    if (viewHistory.length === 0) return '';
+    
+    let html = `
+        <div class="recent-pdfs">
+            <h3><i class="fas fa-history"></i> الملفات التي شاهدتها مؤخراً</h3>
+            <div class="pdf-history-list">
+    `;
+    
+    viewHistory.slice(0, 5).forEach(item => {
+        html += `
+            <div class="pdf-history-item">
+                <div>
+                    <div class="pdf-history-name">${item.name}</div>
+                    <div class="pdf-history-date">${new Date(item.date).toLocaleDateString('ar-EG')}</div>
+                </div>
+                <div class="pdf-history-actions">
+                    <button class="preview-btn" onclick="viewPDF(${item.id}, '${item.name}', '${item.url}')">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+    });
+    
+    html += `
+            </div>
+        </div>
+    `;
+    
+    return html;
+}
+
+// إضافة سجل المشاهدة إلى صفحة المواد
+async function loadSubjectsWithHistory() {
+    await loadSubjects();
+    
+    // إضافة سجل PDFs الحديثة
+    const recentPDFs = showRecentPDFs();
+    const subjectsContainer = document.getElementById('subjects-container');
+    if (subjectsContainer && recentPDFs) {
+        subjectsContainer.insertAdjacentHTML('afterend', recentPDFs);
+    }
+}
