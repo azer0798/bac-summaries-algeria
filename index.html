@@ -1,40 +1,186 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ملخصات البكالوريا - آداب وفلسفة</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بوت ملخصات آداب وفلسفة</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap">
 </head>
 <body>
-  <header>
-    <h1>📚 ملخصات بكالوريا 3AS آداب وفلسفة</h1>
-    <nav>
-      <a href="#philo">الفلسفة</a>
-      <a href="#adab">الآداب</a>
-      <a href="/admin/dashboard.html">لوحة التحكم</a>
+    <!-- شريط التنقل -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-book-open"></i>
+                <h1>ملخصات آداب وفلسفة</h1>
+            </div>
+            <div class="nav-links">
+                <a href="index.html" class="active"><i class="fas fa-home"></i> الرئيسية</a>
+                <a href="#subjects"><i class="fas fa-book"></i> المواد</a>
+                <a href="#help"><i class="fas fa-question-circle"></i> المساعدة</a>
+                <a href="admin.html" id="admin-link"><i class="fas fa-user-shield"></i> لوحة التحكم</a>
+            </div>
+            <button class="menu-btn" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
     </nav>
-  </header>
 
-  <main id="summaries"></main>
+    <!-- الهيرو -->
+    <section class="hero">
+        <div class="hero-content">
+            <h2>مرحباً بك في مكتبة الملخصات</h2>
+            <p>منصة إلكترونية تحتوي على ملخصات ومواد دراسية لطلاب آداب وفلسفة</p>
+            <div class="hero-stats">
+                <div class="stat">
+                    <i class="fas fa-users"></i>
+                    <span id="user-count">0</span>
+                    <p>مستخدم</p>
+                </div>
+                <div class="stat">
+                    <i class="fas fa-book"></i>
+                    <span id="subject-count">0</span>
+                    <p>مادة</p>
+                </div>
+                <div class="stat">
+                    <i class="fas fa-file-alt"></i>
+                    <span id="file-count">0</span>
+                    <p>ملف</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  <script>
-    fetch('/api/summaries')
-      .then(r => r.json())
-      .then(summaries => {
-        const container = document.getElementById('summaries');
-        summaries.forEach(s => {
-          const div = document.createElement('div');
-          div.className = 'summary-card';
-          div.innerHTML = `
-            <h3>${s.title}</h3>
-            <span class="subject">${s.subject}</span>
-            <p>${s.content.substring(0, 200)}...</p>
-            <small>${s.date}</small>
-          `;
-          container.appendChild(div);
-        });
-      });
-  </script>
+    <!-- المواد -->
+    <section id="subjects" class="subjects-section">
+        <div class="container">
+            <h2 class="section-title"><i class="fas fa-graduation-cap"></i> المواد الدراسية</h2>
+            <p class="section-subtitle">اختر المادة لعرض الملخصات والمواد المتاحة</p>
+            
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="ابحث عن مادة...">
+                <button onclick="searchSubjects()"><i class="fas fa-search"></i></button>
+            </div>
+            
+            <div class="refresh-bar">
+                <button onclick="loadSubjects()" class="refresh-btn">
+                    <i class="fas fa-sync-alt"></i> تحديث القائمة
+                </button>
+            </div>
+            
+            <div class="subjects-grid" id="subjects-container">
+                <!-- المواد ستحمل هنا عبر JavaScript -->
+                <div class="loading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>جاري تحميل المواد...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- تفاصيل المادة -->
+    <section id="subject-details" class="details-section" style="display: none;">
+        <div class="container">
+            <button onclick="backToSubjects()" class="back-btn">
+                <i class="fas fa-arrow-right"></i> العودة للمواد
+            </button>
+            <h2 class="section-title" id="subject-title"></h2>
+            <div class="files-container" id="files-container">
+                <!-- الملفات ستحمل هنا -->
+            </div>
+        </div>
+    </section>
+
+    <!-- المساعدة -->
+    <section id="help" class="help-section">
+        <div class="container">
+            <h2 class="section-title"><i class="fas fa-question-circle"></i> كيفية الاستخدام</h2>
+            <div class="help-steps">
+                <div class="step">
+                    <div class="step-icon">1</div>
+                    <h3>تصفح المواد</h3>
+                    <p>اختر المادة التي تريد من قائمة المواد المتاحة</p>
+                </div>
+                <div class="step">
+                    <div class="step-icon">2</div>
+                    <h3>عرض الملفات</h3>
+                    <p>شاهد جميع الملخصات والملفات المتاحة للمادة</p>
+                </div>
+                <div class="step">
+                    <div class="step-icon">3</div>
+                    <h3>تحميل الملفات</h3>
+                    <p>حمل الملفات التي تحتاجها للدراسة</p>
+                </div>
+            </div>
+            
+            <div class="faq">
+                <h3><i class="fas fa-info-circle"></i> الأسئلة الشائعة</h3>
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        هل الموقع مجاني؟
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>نعم، الموقع مجاني بالكامل لجميع الطلاب.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        كيف أضيف مواد جديدة؟
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>يمكن للمسؤول فقط إضافة مواد جديدة عبر لوحة التحكم.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        هل يمكنني مشاركة الملفات؟
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>نعم، يمكنك مشاركة رابط الموقع أو رابط الملفات مع زملائك.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- الفوتر -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <i class="fas fa-book-open"></i>
+                    <h3>ملخصات آداب وفلسفة</h3>
+                    <p>منصة تعليمية للطلاب</p>
+                </div>
+                <div class="footer-links">
+                    <h4>روابط سريعة</h4>
+                    <a href="index.html">الرئيسية</a>
+                    <a href="#subjects">المواد</a>
+                    <a href="#help">المساعدة</a>
+                    <a href="admin.html">لوحة التحكم</a>
+                </div>
+                <div class="footer-info">
+                    <h4>معلومات</h4>
+                    <p><i class="fas fa-user-shield"></i> المسؤول: إدارة الموقع</p>
+                    <p><i class="fas fa-envelope"></i> للتواصل: admin@example.com</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2024 بوت ملخصات آداب وفلسفة. جميع الحقوق محفوظة.</p>
+                <p>تم التطوير باستخدام HTML, CSS, JavaScript</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- الرسائل العائمة -->
+    <div id="message-toast" class="toast"></div>
+
+    <script src="db.js"></script>
+    <script src="script.js"></script>
 </body>
-</html>
+  </html>
